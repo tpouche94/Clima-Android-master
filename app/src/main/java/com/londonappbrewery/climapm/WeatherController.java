@@ -20,6 +20,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
@@ -190,6 +191,14 @@ public class WeatherController extends AppCompatActivity {
                 super.onSuccess(statusCode, headers, response);
 
                 Log.d("Clima", "success! JASON: " + response.toString());
+
+                try {
+                    WeatherDataModel weatherData = WeatherDataModel.fromJson(response);
+
+                    updateUI(weatherData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -206,7 +215,14 @@ public class WeatherController extends AppCompatActivity {
 
 
     // TODO: Add updateUI() here:
+    private void updateUI(WeatherDataModel weather)
+    {
+        mTemperatureLabel.setText(weather.getTemperature());
+        mCityLabel.setText(weather.getCity());
 
+        int resourceID = getResources().getIdentifier(weather.getIconName(), "drawable", getPackageName());
+        mWeatherImage.setImageResource(resourceID);
+    }
 
 
     // TODO: Add onPause() here:
