@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -114,7 +115,7 @@ public class WeatherController extends AppCompatActivity {
 
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
-                Log.d("Clima", "onStatusChanged callback received");
+
             }
 
             @Override
@@ -187,12 +188,17 @@ public class WeatherController extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+
+                Log.d("Clima", "success! JASON: " + response.toString());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.e("Clima", "Fail " + throwable.toString());
+                Log.d("Clima" ,"Status code" + statusCode);
+
+                Toast.makeText(WeatherController.this, "Request Failed", Toast.LENGTH_SHORT ).show();
             }
         });
     }
